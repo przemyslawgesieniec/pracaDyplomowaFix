@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">A.V.I.O.T System</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_1">Voice control</string>
+    <string name="tab_text_2">Manual control</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+</resources>
