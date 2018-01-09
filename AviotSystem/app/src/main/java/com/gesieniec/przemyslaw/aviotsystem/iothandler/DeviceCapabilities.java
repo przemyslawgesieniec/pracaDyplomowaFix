@@ -80,12 +80,12 @@ public class DeviceCapabilities {
         }
 
 
-        Log.d("ipAddress;", ipAddress);
-        Log.d("deviceType;", deviceType.toString());
-        Log.d("messageType;", messageType);
-        Log.d("deviceName;", deviceName);
-        Log.d("deviceLocation;", deviceLocation);
-        Log.d("macAddress;", macAddress);
+//        Log.d("ipAddress;", ipAddress);
+//        Log.d("deviceType;", deviceType.toString());
+//        Log.d("messageType;", messageType);
+//        Log.d("deviceName;", deviceName);
+//        Log.d("deviceLocation;", deviceLocation);
+//        Log.d("macAddress;", macAddress);
 
 
     }

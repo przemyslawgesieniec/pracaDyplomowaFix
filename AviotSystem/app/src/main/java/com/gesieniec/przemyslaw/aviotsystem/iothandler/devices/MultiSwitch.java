@@ -21,47 +21,75 @@ public class MultiSwitch extends CommonDevice {
     private ArrayList<Boolean> switchStatusList;
     private ArrayList<String> triggeringONCommandsENG;
     private ArrayList<String> triggeringOFFCommandsENG;
-    private HashMap<Integer,String> ordinalSpecifier;
-
+    private HashMap<Integer, String> ordinalSpecifier;
+    private ArrayList<DeviceAction> deviceActionOnList;
+    private ArrayList<DeviceAction> deviceActionOffList;
 
 
     public MultiSwitch(ArrayList<Boolean> switchStatusList, String name, String location, InetAddress deviceAddress, String macAddress) {
         super(name, location, deviceAddress, macAddress);
         this.switchStatusList = new ArrayList<>(switchStatusList);
+        Log.d("switchStatusList: ", "" + switchStatusList.size());
+        Log.d("thi.switchStatusList: ", this.switchStatusList.size() + "");
+
         triggeringONCommandsENG = new ArrayList<>();
         triggeringOFFCommandsENG = new ArrayList<>();
         actionMapENG = new HashMap<>();
+        deviceActionOnList = new ArrayList<>();
+        deviceActionOffList = new ArrayList<>();
         ordinalSpecifier = new HashMap<>();
+        fillDeviceActions();
         fillOrdinalSpecifier();
         fillActionMap();
+
         actionList = new ArrayList<>(actionMapENG.keySet());
+        Log.d("MultiSwitch al size: ", "" + actionList.size());
+        for (String action : actionList) {
+            Log.d("MultiSwitch action: ", action);
+        }
 
 
     }
+
+    private void fillDeviceActions() {
+        deviceActionOnList.add(DeviceAction.ON_FIRST);
+        deviceActionOnList.add(DeviceAction.ON_SECOND);
+
+        deviceActionOffList.add(DeviceAction.OFF_FIRST);
+        deviceActionOffList.add(DeviceAction.OFF_SECOND);
+    }
+
 
     private void fillActionMap() {
 
         for (int i = 0; i < switchStatusList.size(); i++) {
+
             /**
              * English Commands ON
              */
-            triggeringONCommandsENG.add("turn on "+ordinalSpecifier.get(i));
-            triggeringONCommandsENG.add("switch on "+ordinalSpecifier.get(i));
-            triggeringONCommandsENG.add("illuminate "+ordinalSpecifier.get(i));
+            for(DeviceAction action: deviceActionOnList){
+                actionMapENG.put("turn on " + ordinalSpecifier.get(i), action);
+                actionMapENG.put("switch on " + ordinalSpecifier.get(i), action);
+                actionMapENG.put("illuminate " + ordinalSpecifier.get(i), action);
+            }
+
             /**
              * English Commands OFF
              */
-            triggeringOFFCommandsENG.add("switch off "+ordinalSpecifier.get(i));
-            triggeringOFFCommandsENG.add("turn off "+ordinalSpecifier.get(i));
+            for(DeviceAction action: deviceActionOffList) {
+                actionMapENG.put("turn off " + ordinalSpecifier.get(i), action);
+                actionMapENG.put("switch off " + ordinalSpecifier.get(i), action);
+            }
         }
 
     }
+
     private void fillOrdinalSpecifier() {
-        ordinalSpecifier.put(0,"first");
-        ordinalSpecifier.put(1,"second");
-        ordinalSpecifier.put(2,"third");
-        ordinalSpecifier.put(3,"fourth");
-        ordinalSpecifier.put(4,"fifth");
+        ordinalSpecifier.put(0, "first");
+        ordinalSpecifier.put(1, "second");
+        ordinalSpecifier.put(2, "third");
+        ordinalSpecifier.put(3, "fourth");
+        ordinalSpecifier.put(4, "fifth");
     }
 
 

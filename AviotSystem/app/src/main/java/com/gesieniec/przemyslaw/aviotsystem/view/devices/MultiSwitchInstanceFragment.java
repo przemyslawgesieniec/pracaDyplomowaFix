@@ -102,7 +102,6 @@ public class MultiSwitchInstanceFragment extends android.support.v4.app.Fragment
             s.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             s.setChecked(deviceCapabilities.getStates().get(0));
             s.setId(deviceCapabilities.getIdBasedOnMAC(deviceCapabilities.getMacAddress())+i);
-            Log.d("oSWITCH IDIDIDIDIDIID, ",""+deviceCapabilities.getID());
             s.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

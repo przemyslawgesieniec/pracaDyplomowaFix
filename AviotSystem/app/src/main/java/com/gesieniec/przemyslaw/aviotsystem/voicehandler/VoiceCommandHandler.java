@@ -119,7 +119,7 @@ public class VoiceCommandHandler {
 
         for (CommonDevice device : ApplicationContext.getCommonDevices()) {
             int i = 1;
-            Log.d("VoiceCommandHandler ", "match with connected Devices");
+            Log.d("VoiceCommandHandler ", "tryMatchWithKeyWords");
             Log.d("Device nr", ""+i);
             Log.d("Device name", device.getName());
             Log.d("Device location", device.getLocation());
@@ -153,35 +153,6 @@ public class VoiceCommandHandler {
         }
 
 
-
-
-    /**
-     * PL
-     */
-//        for (String action:CommandDataClass.getActionsListPL()){
-//            if(possibleCommand.contains(action)){
-//                mAction = action;
-//                PL_score++;
-//            }
-//        }
-//        for (String device:CommandDataClass.getDevicesListPL()){
-//            if(possibleCommand.contains(device)){
-//                mDeviceName = device;
-//                PL_score++;
-//            }
-//        }
-//        for (String place:CommandDataClass.getPlacesListPL()){
-//            if(possibleCommand.contains(place)){
-//                mPlace = place;
-//                PL_score++;
-//            }
-//        }
-//        for (String negation:CommandDataClass.getNegationPL()){
-//            if(possibleCommand.contains(negation)){
-//                mNegation = true;
-//                PL_score++;
-//            }
-//        }
     /**
      * Determine language based on achieved scores
      */
