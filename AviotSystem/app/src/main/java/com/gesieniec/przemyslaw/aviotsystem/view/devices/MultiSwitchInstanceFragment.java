@@ -42,7 +42,7 @@ public class MultiSwitchInstanceFragment extends android.support.v4.app.Fragment
     LinearLayout l4;
     LinearLayout l5;
 
-    Switch s;
+
     ImageButton imgBtn;
     Button editBtn;
     Button saveBtn;
@@ -70,7 +70,7 @@ public class MultiSwitchInstanceFragment extends android.support.v4.app.Fragment
         capabilities = getArguments().getString("capabilities");
         deviceID = getArguments().getInt("fragmentID");
         deviceCapabilities = new DeviceCapabilities(getArguments().getString("capabilities"));
-        View v = inflater.inflate(R.layout.switch_instance_fragment, null);
+        View v = inflater.inflate(R.layout.multi_switch_instance_fragment, null);
 
         setViewElements(v);
         return v;
@@ -83,7 +83,7 @@ public class MultiSwitchInstanceFragment extends android.support.v4.app.Fragment
         view.findViewById(R.id.deviceSettings).setVisibility(RelativeLayout.GONE);
         Log.d("onCreateView.getId();", "" + view.getId());
         super.onViewCreated(view, savedInstanceState);
-        ll = (LinearLayout) view.findViewById(R.id.switchContainer);
+        ll = (LinearLayout) view.findViewById(R.id.multiSwitchContainer);
         l2 = (LinearLayout) view.findViewById(R.id.horizontalSpace);
         l3 = (LinearLayout) view.findViewById(R.id.detailsContainer);
         l4 = (LinearLayout) view.findViewById(R.id.mainFragmentContainer);
@@ -94,21 +94,26 @@ public class MultiSwitchInstanceFragment extends android.support.v4.app.Fragment
         /**
          * State switch
          */
-        s = new Switch(getActivity());
-        s.setGravity(Gravity.FILL_VERTICAL);
-        s.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        s.setChecked(deviceCapabilities.getStates().get(0));
-        s.setId(deviceCapabilities.getIdBasedOnMAC(deviceCapabilities.getMacAddress()));
-        Log.d("oSWITCH IDIDIDIDIDIID, ",""+deviceCapabilities.getID());
-        s.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deviceCapabilities.getStates().set(0, (!deviceCapabilities.getStates().get(0)));
-                Log.d("button state ", String.valueOf(deviceCapabilities.getStates().get(0)));
-                TaskDispatcher.newTask(TaskDispatcher.GuiTaskContext.SWITCH_STATE_CHANGED, deviceCapabilities);
-            }
-        });
-        ll.addView(s);
+        for(int i=0;i<deviceCapabilities.getStates().size();i++){
+            final int stateNumber = i;
+            Switch s = new Switch(getActivity());
+            s.setText(deviceCapabilities.getOrdinalModifier().get(i));
+            s.setTextColor(Color.WHITE);
+            s.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            s.setChecked(deviceCapabilities.getStates().get(0));
+            s.setId(deviceCapabilities.getIdBasedOnMAC(deviceCapabilities.getMacAddress())+i);
+            Log.d("oSWITCH IDIDIDIDIDIID, ",""+deviceCapabilities.getID());
+            s.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deviceCapabilities.getStates().set(stateNumber, (!deviceCapabilities.getStates().get(stateNumber)));
+                    Log.d("button state ", String.valueOf(deviceCapabilities.getStates().get(stateNumber)));
+                    TaskDispatcher.newTask(TaskDispatcher.GuiTaskContext.SWITCH_STATE_CHANGED, deviceCapabilities);
+                }
+            });
+            ll.addView(s);
+
+        }
 
         /**
          * Details dropdown arrow  button

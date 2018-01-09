@@ -32,8 +32,6 @@ public class Switch extends CommonDevice {
     public HashMap<String, DeviceAction> getActionMapENG() {
         return actionMapENG;
     }
-
-
     @Override
     public DeviceType getDeviceType() {
         return type;
@@ -60,7 +58,6 @@ public class Switch extends CommonDevice {
         type = DeviceType.SWITCH;
         this.state = state;
         actionMapENG = new HashMap<>();
-        actionMapPL = new HashMap<>();
         fillActionMap();
         actionList = new ArrayList<>(actionMapENG.keySet());
     }
