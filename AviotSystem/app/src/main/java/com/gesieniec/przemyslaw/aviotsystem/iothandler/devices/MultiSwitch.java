@@ -1,5 +1,7 @@
 package com.gesieniec.przemyslaw.aviotsystem.iothandler.devices;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import com.gesieniec.przemyslaw.aviotsystem.iothandler.DeviceAction;
@@ -19,17 +21,20 @@ public class MultiSwitch extends CommonDevice {
     private ArrayList<Boolean> switchStatusList;
     private ArrayList<String> triggeringONCommandsENG;
     private ArrayList<String> triggeringOFFCommandsENG;
-    private ArrayList<String> triggeringONCommandsPL;
-    private ArrayList<String> triggeringOFFCommandsPL;
+
 
     public MultiSwitch(ArrayList<Boolean> switchStatusList, String name, String location, InetAddress deviceAddress, String macAddress) {
         super(name, location, deviceAddress, macAddress);
-        this.switchStatusList = switchStatusList;
+        switchStatusList = new ArrayList<>(switchStatusList);
+        triggeringONCommandsENG = new ArrayList<>();
+        triggeringOFFCommandsENG = new ArrayList<>();
         fillTriggeringCommandsList();
 
     }
 
     protected void fillTriggeringCommandsList() {
+
+//        for()
         /**
          * English Commands ON
          */
@@ -41,22 +46,11 @@ public class MultiSwitch extends CommonDevice {
          */
         triggeringOFFCommandsENG.add("switch off");
         triggeringOFFCommandsENG.add("turn off");
-        /**
-         * Polish Commands ON
-         */
-        triggeringONCommandsPL.add("włącz");
-        triggeringONCommandsPL.add("oświetl");
-        triggeringONCommandsPL.add("zapal");
-        /**
-         * Polish Commands OFF
-         */
-        triggeringOFFCommandsPL.add("wyłacz");
-        triggeringOFFCommandsPL.add("zgaś");
     }
 
     @Override
     public String toString() {
-        return "MultiLightSwitch";
+        return "MultiSwitch";
     }
 
     @Override
@@ -70,22 +64,72 @@ public class MultiSwitch extends CommonDevice {
     }
 
 
-
     @Override
     public String getMessageToSend(DeviceCapabilities capabilities) {
-
-//TODO: FILL THIS
-        return null;
+        return getMessageBasedOnCurrentState();
 
     }
 
     @Override
     public void updateDeviceWithCapabilities(DeviceCapabilities deviceCapabilities) {
-        //TODO: FILL THIS
+        Log.d("MultiSwitch", "updateDeviceWithCapabilities");
+        isUpdated = false;
+        isDataUpdated = false;
+        for (int i = 0; i < switchStatusList.size(); i++) {
+            if (switchStatusList.get(i) != deviceCapabilities.getStates().get(i)) {
+                switchStatusList.set(i, deviceCapabilities.getStates().get(i));
+                isUpdated = true;
+            }
+        }
+        if (!name.equals(deviceCapabilities.getDeviceName())) {
+            name = deviceCapabilities.getDeviceName();
+            isDataUpdated = true;
+        }
+        if (!location.equals(deviceCapabilities.getDeviceLocation())) {
+            location = deviceCapabilities.getDeviceLocation();
+            isDataUpdated = true;
+        }
     }
 
     @Override
     public String getMessageBasedOnAction(DeviceAction action) {
+        switch (action) {
+            case ON_FIRST:
+                switchStatusList.set(0,true);
+                break;
+            case OFF_FIRST:
+                switchStatusList.set(0,false);
+                break;
+            case ON_SECOND:
+                switchStatusList.set(1,true);
+                break;
+            case OFF_SECOND:
+                switchStatusList.set(1,false);
+                break;
+        }
+        return toString() + ";" + booleanToString(switchStatusList.get(0)) + ";" + booleanToString(switchStatusList.get(1));
+    }
+
+    private String getMessageBasedOnCurrentState() {
+        if (isUpdated) {
+            for (int i = 0; i < switchStatusList.size(); i++) {
+
+            }
+        }
+        if (isDataUpdated) {
+            Log.d("isDataUpdated", "" + isDataUpdated);
+            String action = "UpdateDeviceData;";
+            action += name;
+            action += ";";
+            action += location;
+            action += ";";
+            return action;
+        }
+        isDataUpdated = false;
         return null;
+    }
+
+    private String booleanToString(boolean state) {
+        return state ? "true" : "false";
     }
 }

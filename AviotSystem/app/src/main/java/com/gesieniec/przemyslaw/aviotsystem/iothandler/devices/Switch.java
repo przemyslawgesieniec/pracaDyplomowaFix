@@ -33,9 +33,6 @@ public class Switch extends CommonDevice {
         return actionMapENG;
     }
 
-    public HashMap<String, DeviceAction> getActionMapPL() {
-        return actionMapPL;
-    }
 
     @Override
     public DeviceType getDeviceType() {
@@ -85,22 +82,11 @@ public class Switch extends CommonDevice {
          */
         actionMapENG.put("turn of", DeviceAction.OFF);
         actionMapENG.put("switch off", DeviceAction.OFF);
-        /**
-         * Polish Commands ON
-         */
-        actionMapPL.put("włącz", DeviceAction.ON);
-        actionMapPL.put("oświetl", DeviceAction.ON);
-        actionMapPL.put("zapal", DeviceAction.ON);
-        /**
-         * Polish Commands OFF
-         */
-        actionMapPL.put("wyłącz", DeviceAction.OFF);
-        actionMapPL.put("zgaś", DeviceAction.OFF);
     }
 
     @Override
     public String toString() {
-        return "LightSwitch";
+        return "Switch";
     }
 
 
@@ -130,7 +116,14 @@ public class Switch extends CommonDevice {
 
     @Override
     public String getMessageBasedOnAction(DeviceAction action) {
-        return  null;
+        switch(action){
+            case ON:
+                return toString()+action.toString();
+            case OFF:
+                return toString()+action.toString();
+        }
+        return null;
+
     }
 
     private String getMessageBasedOnCurrentState() {
